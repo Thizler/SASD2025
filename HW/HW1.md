@@ -1,79 +1,45 @@
-timelines : 10:00 - 30:00
+timelines : 10:00 - 30:00  
 link : https://www.youtube.com/watch?v=6wDoopbtEqk
 
-# Refactoring to Fix Code Smells
-
-Fowler highlights a major issue: Long Functions — functions that are too long and hard to read.
-The goal is “to make the code cleaner without changing the program’s behavior.”
-
+# Refactoring เพื่อแก้ Code Smells
+Fowler เน้นปัญหาใหญ่คือ Long Function (ฟังก์ชันยาว อ่านยาก)
+เป้าหมายคือ "ทำให้โค้ดสะอาดขึ้นโดยไม่เปลี่ยนพฤติกรรมโปรแกรม"
 ## 1. Extract Function
-
-Break a large function into smaller helper functions, especially the parts that contain switch statements based on play types.
-
-Why extract?
-
-The main function becomes easier to read
-
-Specialized logic is grouped clearly
-
-Reduces overly long code
-
-Caution: You must properly handle local variables such as perf and play that may be used across multiple lines.
+แยกฟังก์ชันย่อยออกจากฟังก์ชันหลัก
+โดยเฉพาะส่วนที่มี switch ตามประเภทละคร
+ทำไมต้องแยก?
+ฟังก์ชันหลักอ่านง่ายขึ้น
+จัดการ logic เฉพาะทางได้ชัดเจน
+ลดโค้ดยาวเกินไป
+ข้อควรระวัง: ต้องจัดการกับตัวแปร local เช่น
+perf, play ที่ถูกใช้ข้ามหลายบรรทัด
 
 ## 2. Rename Variable
-
-Change variable names so the code “communicates better.”
-
-Examples from Fowler:
-
-thisAmount → result (a common name for return values)
-
-perf → aPerformance (more explicit and descriptive)
-
-Outcome:
-You can immediately understand what a variable stores just by reading the code.
+เปลี่ยนชื่อให้โค้ด "สื่อสารได้ดีขึ้น"
+ตัวอย่างที่ Fowler ทำ:
+thisAmount → result (มาตรฐานว่าค่าที่ฟังก์ชันส่งกลับ)
+perf → aPerformance (บอกชนิดข้อมูลชัดเจนขึ้น)
+ผลลัพธ์: โค้ดอ่านแล้วรู้ทันทีว่าตัวแปรเก็บอะไร
 
 ## 3. Replace Temp with Query
+ลบ ตัวแปรชั่วคราว (Temporary Variable) เช่น play
+แล้วเปลี่ยนเป็นการเรียกฟังก์ชันแทน เช่น playFor(perf)
 
-Remove temporary variables (e.g., play) and replace them with function calls such as playFor(perf).
-
-Why?
-
-Reduces dependencies between variables
-
-Makes Extract Function easier
-
-Organizes logic more cleanly
-
-Fowler emphasizes not to worry about performance at this stage:
-→ Make the code clean first, then profile later to find performance bottlenecks.
+เหตุผล:
+ลด dependency ระหว่างตัวแปร
+ง่ายต่อการแยกฟังก์ชันและจัดกลุ่ม logic
+Fowler บอกว่าไม่ต้องกังวลเรื่อง performance ตอนนี้
+→ ทำโค้ดให้สะอาดก่อน แล้วค่อย profiling หาจุดช้าทีหลัง
 
 ## 4. Split Loop
+แยกลูปที่ทำหลายงาน (เช่น คิดเงิน + คิดคะแนนสะสม) ออกจากกัน เช่น
+ลูป A → คำนวณราคา
+ลูป B → คำนวณคะแนน
+ทำไมต้องแยก?
+ทำให้ Extract Function ได้ง่ายขึ้น
+ลด logic ที่ซับซ้อนปะปนกัน
+ทำโค้ดอ่านง่ายขึ้นมาก
 
-Separate loops that perform multiple tasks (e.g., calculating price + calculating points).
-
-Example:
-
-Loop A → compute the price
-
-Loop B → compute reward points
-
-Why split?
-
-Makes Extract Function easier
-
-Removes mixed, tangled logic
-
-Significantly improves readability
-
-## "Refactoring should be done in small steps without changing the program’s behavior."
-
-The ultimate goal is:
-
-Clean, well-organized internal code
-
-Ready to support future features, such as:
-
-HTML rendering
-
-New play types, etc.
+## "Refactoring ควรทำแบบก้าวเล็ก ๆ โดยไม่ทำให้พฤติกรรมโปรแกรมเปลี่ยน"
+และเป้าหมายคือ: โค้ดภายในสวยงาม พร้อมรองรับ future feature เช่น
+rendering แบบ HTML เพิ่มประเภทละครใหม่ เป็นต้น
