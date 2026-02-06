@@ -22,7 +22,7 @@ public class ClassDesignTest
     {
         var p = new Product() { Name = "Nooddle", Price = 40.50m, Quantity = 3 };
         Console.WriteLine(p);
-    }
+    } //
     void SimpleTest()
     {
         Console.WriteLine(Math.Sin(Math.PI/6));
