@@ -1,8 +1,7 @@
-﻿using SkiaSharp;
-using SkiaSharp.HarfBuzz;
+﻿using System.Collections.Generic;
 using System;
-using System.Collections.Generic;
-using static System.Net.Mime.MediaTypeNames;
+using SkiaSharp;
+using SkiaSharp.HarfBuzz;
 
 namespace SkiaLiteUI;
 
@@ -32,8 +31,8 @@ public class SkiaTest : IDisposable, Renderer
         surface = SKSurface.Create(grContext, renderTarget, GRSurfaceOrigin.BottomLeft, SKColorType.Rgba8888);
 
         Random rand = new Random();
-        //for (int i = 0; i < 100; ++i)
-        //    widgets.Add(RectWidget.CreateRandom(rand, clientSize, new (256, 256)));
+        for (int i = 0; i < 100; ++i)
+            widgets.Add(RectWidget.CreateRandom(rand, clientSize, new (256, 256)));
         AddText();
     }
 
@@ -62,35 +61,30 @@ public class SkiaTest : IDisposable, Renderer
 
     void AddText()
     {
-        var font = Fonts.GetFromFile(@"Resources\Trirong-Regular.ttf", 40);
+        var typeface = SKTypeface.FromFile(@"Resources\Trirong-Regular.ttf");
+        var font = new SKFont(typeface, 40);
         var position = new Vector(100, 300);
         var text = "รู้กตัญญูกล้ำกลืนนี้นั้นโน้น abc";
 
-        var step = new Vector(0, 40);
-        widgets.Add(new TextWidget(font, position, text) { Color = SKColors.Red });
-        position += step;
-        widgets.Add(new TextWidget(font, position, text) { Color = SKColors.Green });
-        position += step;
-        widgets.Add(new TextWidget(font, position, text) { Color = SKColors.Blue });
+        var widget = new TextWidget() { Font = font, Text = text, Position = position };
+        widgets.Add(widget);
 
-        BuildText(font);
+        //BuildText(font);
         //CloneText(font);
     }
 
     // Builder design pattern
-    private void BuildText(SKFont font)
+/*    private void BuildText(SKFont font)
     {
         var step = new Vector(0, 40);
-        var builder = new TextBuilder(font, new(50, 50), SKColors.Blue) 
-        { Step = new Vector(40, 40) };
-        
+        var builder = new TextBuilder(font, new(50, 50), SKColors.Blue);
 
         for (int i = 0; i < 5; i++)
         {
-            builder.Color = GlobalRandom.Obj.NextColor();
-            widgets.Add(builder.Create("134 คุณานนต์ หฤทัยธรรม " + i));
+            widgets.Add(builder.Create("ทดสอบข้อความ " + i));
+            builder.Position += step;
         }
-    }
+    }*/
 
     // Prototype design pattern
 /*    private void CloneText(SKFont font)
